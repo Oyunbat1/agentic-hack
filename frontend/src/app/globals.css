@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
+/* Minimal monochrome: color only for meaning (ok / warn). */
 :root {
-  --bg: #f6f4ef;
+  --bg: #ffffff;
   --card: #ffffff;
-  --ink: #1c1b17;
-  --muted: #6f6b61;
-  --line: #e6e1d6;
-  --accent: #1f6f4a;
-  --accent-soft: #e3f0e8;
-  --warn: #b4551f;
+  --ink: #18181b;
+  --muted: #71717a;
+  --line: #e4e4e7;
+  --tile: #f4f4f5;
+  --ok: #16a34a;
+  --warn: #c2410c;
 }
 
 @theme inline {
@@ -17,10 +18,11 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
+  --color-tile: var(--tile);
+  --color-ok: var(--ok);
   --color-warn: var(--warn);
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
   --font-mono: var(--font-mono);
 }
 
@@ -28,6 +30,10 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
 }
 
 @keyframes step-in {
