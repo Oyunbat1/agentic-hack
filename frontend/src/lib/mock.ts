@@ -3,7 +3,7 @@
 
 export type Step = {
   phase: "understand" | "search" | "compare" | "cargo" | "decide" | "recheck" | "pay" | "order";
-  protocol: "LLM" | "MCP" | "A2A" | "cache" | "code" | "payment";
+  protocol: "STT" | "LLM" | "MCP" | "A2A" | "cache" | "code" | "payment";
   actor: string;
   title: string;
   detail?: string;
@@ -142,6 +142,7 @@ function planSteps(sc: Scenario): Step[] {
   ];
 }
 
+const EXAMPLE_VOICE = "40 размерын хар пүүз, 150 мянгаас хэтрэхгүй";
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const clone = (s: Session): Session => structuredClone(s);
 const STEP_MS = 450;
@@ -155,9 +156,17 @@ function invoiceFor(amount: number): Session["invoice"] {
 }
 
 export const mockApi = {
-  async plan(message: string): Promise<Session> {
+  /** Oyu STT stand-in: real call uploads `audio` and returns Mongolian text. */
+  async transcribe(audio: Blob): Promise<string> {
+    await wait(900);
+    return audio.size > 0 ? EXAMPLE_VOICE : "";
+  },
+
+  async plan(message: string, opts: { voiceMs?: number } = {}): Promise<Session> {
     const sc = SCENARIOS.find((s) => s.match.test(message))!;
     planned = planSteps(sc);
+    if (opts.voiceMs)
+      planned.unshift({ phase: "understand", protocol: "STT", actor: "Oyu STT", title: `Дуут хүсэлтийг текст болгов (${(opts.voiceMs / 1000).toFixed(1)}с)`, ms: 860, ok: true });
     startedAt = Date.now();
     store = {
       id: `sess-${startedAt}`,
