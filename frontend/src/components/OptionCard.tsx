@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { mnt, type Option } from "@/lib/mock";
 
 export function ProductImage({ option, className }: { option: Option; className: string }) {
@@ -5,7 +8,7 @@ export function ProductImage({ option, className }: { option: Option; className:
     <div className={`relative overflow-hidden rounded-xl bg-tile ${className}`}>
       {option.image ? (
         // eslint-disable-next-line @next/next/no-img-element -- remote mock images, no loader configured
-        <img src={option.image} alt={option.title_mn} className="h-full w-full object-cover mix-blend-multiply" />
+        <img src={option.image} alt={option.title_mn} className="h-full w-full object-cover mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
       ) : (
         <span className="absolute inset-0 grid place-items-center font-display text-5xl font-bold text-line">
           {option.title_mn.slice(0, 1)}
@@ -15,10 +18,18 @@ export function ProductImage({ option, className }: { option: Option; className:
   );
 }
 
-export function OptionCard({ option, budget, onClick }: { option: Option; budget: number | null; onClick: () => void }) {
+type Props = { option: Option; index: number; budget: number | null; onClick: () => void };
+
+export function OptionCard({ option, index, budget, onClick }: Props) {
   const over = budget !== null && option.total_mnt[1] > budget;
   return (
-    <article onClick={onClick} className="cursor-pointer">
+    <motion.article
+      onClick={onClick}
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="group cursor-pointer"
+    >
       <div className="relative mb-3">
         <ProductImage option={option} className="aspect-[3/4]" />
         {option.rank === 1 && (
@@ -37,6 +48,6 @@ export function OptionCard({ option, budget, onClick }: { option: Option; budget
         карго орсон{over && <span className="text-warn"> · Төсвөөс давна</span>}
       </p>
       <button className="mt-3 h-10 w-full rounded-lg border border-line text-[13px] hover:bg-tile">Дэлгэрэнгүй</button>
-    </article>
+    </motion.article>
   );
 }

@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { ORDER_FLOW, type Session } from "@/lib/mock";
 
 const LABELS = ["Захиалсан", "Хятадад авсан", "Эрээнд", "Замд", "УБ-д ирсэн", "Хүргэгдсэн"];
@@ -7,7 +10,14 @@ export function OrderTracker({ order, onAdvance }: { order: NonNullable<Session[
   return (
     <section className="mx-auto my-16 max-w-2xl">
       <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
-        <span className="text-ok">✓</span> Захиалга баталгаажлаа
+        <motion.span
+          className="text-ok"
+          initial={{ scale: 0, rotate: -30 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: "spring", stiffness: 400, damping: 18, delay: 0.15 }}
+        >
+          ✓
+        </motion.span> Захиалга баталгаажлаа
       </h2>
       <code className="mt-1 block font-mono text-xs text-muted">{order.order_id}</code>
 
@@ -17,8 +27,10 @@ export function OrderTracker({ order, onAdvance }: { order: NonNullable<Session[
             key={label}
             className="relative h-11 border-l border-line pl-5 md:h-auto md:flex-1 md:border-t md:border-l-0 md:pt-4 md:pl-0 md:text-center"
           >
-            <span
-              className={`absolute top-0 -left-[5px] h-2.5 w-2.5 rounded-full border md:-top-[5px] md:left-1/2 md:-ml-[5px] ${
+            <motion.span
+              initial={false}
+              animate={{ scale: i === at ? 1.35 : 1 }}
+              className={`absolute top-0 -left-[5px] h-2.5 w-2.5 rounded-full border transition-colors duration-500 md:-top-[5px] md:left-1/2 md:-ml-[5px] ${
                 i <= at ? "border-ink bg-ink" : "border-line bg-white"
               }`}
             />

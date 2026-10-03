@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { ProductImage } from "@/components/OptionCard";
 import { mnt, type Option, type Session } from "@/lib/mock";
 
@@ -21,8 +24,19 @@ export function OptionSheet({ option: o, session, busy, onChoose, onAcceptPrice,
   ];
 
   return (
-    <div className="fixed inset-0 z-40 bg-black/15" onClick={onClose}>
-      <section
+    <motion.div
+      className="fixed inset-0 z-40 bg-black/15"
+      onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+    >
+      <motion.section
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 40 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
         className="absolute inset-x-0 bottom-0 h-[92%] overflow-auto rounded-t-2xl border-t border-line bg-card p-6 md:inset-y-0 md:right-0 md:left-auto md:h-full md:w-[440px] md:rounded-none md:border-t-0 md:border-l md:p-8"
       >
@@ -67,7 +81,7 @@ export function OptionSheet({ option: o, session, busy, onChoose, onAcceptPrice,
         <p className="text-xs text-muted">Каргоны төлбөрийг бараа Монголд ирэхэд төлнө.</p>
 
         {change ? (
-          <div className="mt-5 rounded-xl border border-warn p-4">
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} className="mt-5 rounded-xl border border-warn p-4">
             <b className="text-sm font-semibold">Үнэ {change.pct}% өссөн байна</b>
             <p className="mt-1 text-xl tabular-nums">
               <s className="text-muted">{mnt(change.old_mnt)}</s> → <strong>{mnt(change.new_mnt)}</strong>
@@ -83,7 +97,7 @@ export function OptionSheet({ option: o, session, busy, onChoose, onAcceptPrice,
             <button onClick={onClose} className="mt-2 h-11 w-full rounded-lg border border-line text-sm hover:bg-tile">
               Өөр сонголт
             </button>
-          </div>
+          </motion.div>
         ) : (
           <button
             onClick={onChoose}
@@ -93,7 +107,7 @@ export function OptionSheet({ option: o, session, busy, onChoose, onAcceptPrice,
             {busy ? "Үнэ, үлдэгдлийг шалгаж байна…" : "Үүнийг сонгох"}
           </button>
         )}
-      </section>
-    </div>
+      </motion.section>
+    </motion.div>
   );
 }

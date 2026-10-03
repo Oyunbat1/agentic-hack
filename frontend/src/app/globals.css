@@ -36,8 +36,15 @@ h1, h2, h3 {
   font-family: var(--font-display), var(--font-sans), sans-serif;
 }
 
-@keyframes step-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
+
+/* Tailwind v4 preflight resets buttons to cursor: default. */
+button:not(:disabled), a[href] {
+  cursor: pointer;
 }
-.step-in { animation: step-in 0.35s ease-out both; }
+
+/* In-page anchor links glide; Next skips it on route changes (data-scroll-behavior on <html>). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

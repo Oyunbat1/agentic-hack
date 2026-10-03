@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { QRCodeSVG } from "qrcode.react";
 import { mnt, type Session } from "@/lib/mock";
 
@@ -5,9 +8,14 @@ export function PaymentCard({ session, busy, onPaid, onBack }: { session: Sessio
   const inv = session.invoice!;
   return (
     <section className="mx-auto my-16 max-w-sm text-center">
-      <div className="inline-block rounded-xl bg-tile p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="inline-block rounded-xl bg-tile p-4"
+      >
         <QRCodeSVG value={inv.qr_text} size={168} bgColor="#f4f4f5" />
-      </div>
+      </motion.div>
       <div className="mt-5 font-display text-3xl font-bold tabular-nums">{mnt(inv.amount)}</div>
       <p className="text-xs text-muted">QPay · sandbox</p>
       <code className="mt-1 block font-mono text-xs text-muted">{inv.invoice_id}</code>
